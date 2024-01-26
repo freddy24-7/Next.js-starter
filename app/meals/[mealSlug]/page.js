@@ -34,7 +34,7 @@ export default function MealDetailsPage({ params }) {
       <header className={classes.header}>
         <div className={classes.image}>
           <Image
-              src={`${awsS3BucketUrl}/${image}`}
+              src={`${awsS3BucketUrl}/${meal.image}`}
               alt={meal.title}
               fill
           />
