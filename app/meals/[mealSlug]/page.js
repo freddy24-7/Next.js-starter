@@ -4,7 +4,23 @@ import { notFound } from 'next/navigation';
 import { getMeal } from '@/lib/meals';
 import classes from './page.module.css';
 
+export async function generateMetadata({ params }) {
+  const meal = getMeal(params.mealSlug);
+
+  if (!meal) {
+    notFound();
+  }
+
+  return {
+    title: meal.title,
+    description: meal.summary,
+  };
+}
+
 export default function MealDetailsPage({ params }) {
+
+  const awsS3BucketUrl = process.env.AWS_S3_BUCKET_URL;
+
   const meal = getMeal(params.mealSlug);
 
   if (!meal) {
@@ -17,7 +33,11 @@ export default function MealDetailsPage({ params }) {
     <>
       <header className={classes.header}>
         <div className={classes.image}>
-          <Image src={meal.image} alt={meal.title} fill />
+          <Image
+              src={`${awsS3BucketUrl}/${image}`}
+              alt={meal.title}
+              fill
+          />
         </div>
         <div className={classes.headerText}>
           <h1>{meal.title}</h1>
